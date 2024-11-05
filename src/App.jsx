@@ -6,8 +6,10 @@ import LoginForm from "./component/Users/Login";
 import RegistrationForm from "./component/Users/Register";
 import PrivateNavbar from "./component/Navbar/PrivateNavbar";
 import { useSelector } from "react-redux";
-import Dashboard from "./component/Users/Dashboard";
+import AddCategory from "./component/category/AddCategory";
 import UserProfile from "./component/Users/UserProfile";
+import CategoriesList from "./component/category/CategoriesList";
+import UpdateCategory from "./component/category/UpdateCategory";
 
 export default function App() {
   //get the token
@@ -21,6 +23,9 @@ export default function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/profile" element={<UserProfile />} />
+        <Route path="/add-category" element={<AddCategory />} />
+        <Route path="/categories" element={<CategoriesList />} />
+        <Route path="/update-category/:id" element={<UpdateCategory />} />
       </Routes>
     </BrowserRouter>
   );
