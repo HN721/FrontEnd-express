@@ -53,8 +53,8 @@ export const updateCategory = async ({ type, name, id }) => {
   );
   return response.data;
 };
-export const deleteCategory = async (id) => {
-  const response = await axios.delete(`${BASE_URL}categories/delete/${id}`, {
+export const deleteTransaksi = async (id) => {
+  const response = await axios.delete(`${BASE_URL}transaksi/delete/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

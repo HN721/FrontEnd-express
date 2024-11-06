@@ -3,7 +3,10 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { FaTrash, FaEdit } from "react-icons/fa";
 
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { listTransaksi } from "../../services/transaksi/TransactionsServices";
+import {
+  deleteTransaksi,
+  listTransaksi,
+} from "../../services/transaksi/TransactionsServices";
 import { listCategory } from "../../services/category/categoryService";
 
 const FilterSection = () => {
@@ -13,6 +16,22 @@ const FilterSection = () => {
     type: "",
     category: "",
   });
+  const {
+    mutateAsync,
+    isPending,
+    isSuccess,
+    error: categoryErr,
+  } = useMutation({
+    mutationFn: deleteTransaksi,
+    mutationKey: ["delete"],
+  });
+  const handleDelete = (id) => {
+    mutateAsync(id)
+      .then((data) => {
+        refetch();
+      })
+      .catch((e) => console.log(e));
+  };
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
