@@ -10,7 +10,8 @@ import AddCategory from "./component/category/AddCategory";
 import UserProfile from "./component/Users/UserProfile";
 import CategoriesList from "./component/category/CategoriesList";
 import UpdateCategory from "./component/category/UpdateCategory";
-
+import TransactionForm from "./component/Transactions/TransactionForm";
+import Dashboard from "./component/Users/Dashboard";
 export default function App() {
   //get the token
   const user = useSelector((state) => state?.auth?.user);
@@ -26,6 +27,8 @@ export default function App() {
         <Route path="/add-category" element={<AddCategory />} />
         <Route path="/categories" element={<CategoriesList />} />
         <Route path="/update-category/:id" element={<UpdateCategory />} />
+        <Route path="/add-transaction" element={<TransactionForm />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );

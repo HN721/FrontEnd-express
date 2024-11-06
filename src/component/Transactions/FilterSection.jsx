@@ -3,8 +3,33 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { FaTrash, FaEdit } from "react-icons/fa";
 
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { listTransaksi } from "../../services/transaksi/TransactionsServices";
+import { listCategory } from "../../services/category/categoryService";
 
 const FilterSection = () => {
+  const [filter, setFilters] = useState({
+    startDate: "",
+    endDate: "",
+    type: "",
+    category: "",
+  });
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+  console.log(filter);
+  const {
+    data: categoryId,
+    isLoading: category,
+    error: err,
+  } = useQuery({
+    queryFn: listCategory,
+    queryKey: ["list", filter],
+  });
+  const { data, isError, isFetched, isLoading, error, refetch } = useQuery({
+    queryFn: () => listTransaksi(filter),
+    queryKey: ["list-transaksi", filter],
+  });
   return (
     <div className="my-4 p-4 shadow-lg rounded-lg bg-white">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -12,18 +37,24 @@ const FilterSection = () => {
         <input
           type="date"
           name="startDate"
+          value={filter.startDate}
+          onChange={handleFilterChange}
           className="p-2 rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
         />
         {/* End Date */}
         <input
           type="date"
           name="endDate"
+          value={filter.endDate}
+          onChange={handleFilterChange}
           className="p-2 rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
         />
         {/* Type */}
         <div className="relative">
           <select
             name="type"
+            value={filter.type}
+            onChange={handleFilterChange}
             className="w-full p-2 rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 appearance-none"
           >
             <option value="">All Types</option>
@@ -35,9 +66,22 @@ const FilterSection = () => {
         {/* Category */}
         <div className="relative">
           <select
+            value={filter.category}
+            onChange={handleFilterChange}
             name="category"
             className="w-full p-2 rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 appearance-none"
-          ></select>
+          >
+            <option value="All">All Categories</option>
+            <option value="Uncategorized">All Uncategorized</option>
+
+            {categoryId?.map((category) => {
+              return (
+                <option key={category?._id} value={category?.name}>
+                  {category?.name}
+                </option>
+              );
+            })}
+          </select>
           <ChevronDownIcon className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
         </div>
       </div>
@@ -48,7 +92,7 @@ const FilterSection = () => {
             Filtered Transactions
           </h3>
           <ul className="list-disc pl-5 space-y-2">
-            {/* {transactions?.map((transaction) => (
+            {data?.map((transaction) => (
               <li
                 key={transaction.id}
                 className="bg-white p-3 rounded-md shadow border border-gray-200 flex justify-between items-center"
@@ -90,7 +134,7 @@ const FilterSection = () => {
                   </button>
                 </div>
               </li>
-            ))} */}
+            ))}
           </ul>
         </div>
       </div>
