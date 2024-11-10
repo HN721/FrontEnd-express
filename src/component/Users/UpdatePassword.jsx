@@ -2,12 +2,19 @@ import React, { useState } from "react";
 import { AiOutlineLock } from "react-icons/ai";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useMutation } from "@tanstack/react-query";
+import { changePassword } from "../../services/users/userServies";
 const validationSchema = Yup.object({
   password: Yup.string()
     .min(5, "Password must be at least 5 characters long")
     .required("Email is required"),
 });
 const UpdatePassword = () => {
+  const { mutateAsync, isError, isPending, isSuccess, error } = useMutation({
+    mutationFn: changePassword,
+    mutationFn: ["password"],
+  });
+
   const formik = useFormik({
     initialValues: {
       password: "123456",
@@ -15,9 +22,7 @@ const UpdatePassword = () => {
     // Validations
     validationSchema,
     //Submit
-    onSubmit: (values) => {
-      console.log(values);
-    },
+    onSubmit: (values) => {},
   });
   return (
     <div className="flex flex-col items-center justify-center p-4">
