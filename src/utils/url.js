@@ -1,1 +1,1 @@
-export const BASE_URL = "https://expense-sigma-seven.vercel.app/";
+export const BASE_URL = "https://expense-five-pi.vercel.app/";
